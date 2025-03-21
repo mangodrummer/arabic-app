@@ -16,25 +16,25 @@ const phrases: Phrase[] = [
     english: "Hello",
     arabic: "مرحبا",
     franco: "mar7aba",
-    audioUrl: "/audio/mar7aba.mp3"
+    audioUrl: "/audio/mar7aba.m4a"
   },
   {
     english: "How are you?",
     arabic: "كيفك؟",
     franco: "kifak?",
-    audioUrl: "/audio/kifak.mp3"
+    audioUrl: "/audio/kifak.m4a"
   },
   {
     english: "Thank you",
     arabic: "شكراً",
     franco: "shukran",
-    audioUrl: "/audio/shukran.mp3"
+    audioUrl: "/audio/shukran.m4a"
   },
   {
     english: "Good morning",
     arabic: "صباح الخير",
     franco: "sabah el kheir",
-    audioUrl: "/audio/sabah-el-kheir.mp3"
+    audioUrl: "/audio/sabah-el-kheir.m4a"
   }
 ];
 
