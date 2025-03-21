@@ -2,13 +2,18 @@
 
 import { useState } from 'react';
 import Quiz from '@/components/Quiz';
-import AudioPlayer from '@/components/AudioPlayer';
+import Image from 'next/image';
 
 interface Phrase {
   english: string;
   arabic: string;
   franco: string;
-  audioUrl: string;
+  imageUrl: string;
+  gender?: 'masculine' | 'feminine';
+  feminineForm?: {
+    arabic: string;
+    franco: string;
+  };
 }
 
 const phrases: Phrase[] = [
@@ -16,54 +21,65 @@ const phrases: Phrase[] = [
     english: "Hello",
     arabic: "مرحبا",
     franco: "mar7aba",
-    audioUrl: "/audio/mar7aba.m4a"
+    imageUrl: "/images/hello.jpg"
   },
   {
     english: "How are you?",
     arabic: "كيفك؟",
     franco: "kifak?",
-    audioUrl: "/audio/kifak.m4a"
+    imageUrl: "/images/how-are-you.jpg",
+    gender: 'masculine',
+    feminineForm: {
+      arabic: "كيفكِ؟",
+      franco: "kifik?"
+    }
   },
   {
     english: "Thank you",
     arabic: "شكراً",
     franco: "shukran",
-    audioUrl: "/audio/shukran.m4a"
+    imageUrl: "/images/thank-you.jpg"
   },
   {
     english: "Good morning",
     arabic: "صباح الخير",
     franco: "sabah el kheir",
-    audioUrl: "/audio/sabah-el-kheir.m4a"
+    imageUrl: "/images/good-morning.jpg"
   },
   {
     english: "Good night",
     arabic: "تصبح على خير",
     franco: "tsabbe7 3ala kheir",
-    audioUrl: "/audio/tsabbe7-3ala-kheir.m4a"
+    imageUrl: "/images/good-night.jpg"
   },
   {
     english: "Please",
     arabic: "من فضلك",
     franco: "min fadlak",
-    audioUrl: "/audio/min-fadlak.m4a"
+    imageUrl: "/images/please.jpg",
+    gender: 'masculine',
+    feminineForm: {
+      arabic: "من فضلكِ",
+      franco: "min fadlik"
+    }
   },
   {
     english: "You're welcome",
     arabic: "عفواً",
     franco: "3afwan",
-    audioUrl: "/audio/3afwan.m4a"
+    imageUrl: "/images/youre-welcome.jpg"
   },
   {
     english: "Goodbye",
     arabic: "مع السلامة",
     franco: "ma3 el salame",
-    audioUrl: "/audio/ma3-el-salame.m4a"
+    imageUrl: "/images/goodbye.jpg"
   }
 ];
 
 export default function Home() {
   const [showQuiz, setShowQuiz] = useState(false);
+  const [selectedGender, setSelectedGender] = useState<'masculine' | 'feminine'>('masculine');
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
@@ -75,6 +91,31 @@ export default function Home() {
         {!showQuiz ? (
           <>
             <div className="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mb-8">
+              <div className="flex justify-center mb-6">
+                <div className="flex space-x-4">
+                  <button
+                    onClick={() => setSelectedGender('masculine')}
+                    className={`px-4 py-2 rounded ${
+                      selectedGender === 'masculine'
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+                    }`}
+                  >
+                    Masculine
+                  </button>
+                  <button
+                    onClick={() => setSelectedGender('feminine')}
+                    className={`px-4 py-2 rounded ${
+                      selectedGender === 'feminine'
+                        ? 'bg-blue-500 text-white'
+                        : 'bg-gray-200 text-gray-700 dark:bg-gray-700 dark:text-gray-300'
+                    }`}
+                  >
+                    Feminine
+                  </button>
+                </div>
+              </div>
+
               <h2 className="text-2xl font-semibold text-center mb-4 text-gray-900 dark:text-white">
                 Common Phrases
               </h2>
@@ -82,13 +123,30 @@ export default function Home() {
               <div className="space-y-6">
                 {phrases.map((phrase, index) => (
                   <div key={index} className="border-b pb-4">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-lg text-gray-900 dark:text-white">{phrase.english}</span>
-                      <span className="text-lg text-gray-900 dark:text-white">{phrase.arabic}</span>
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <AudioPlayer text={phrase.franco} audioUrl={phrase.audioUrl} />
-                      <span className="text-sm text-gray-500 dark:text-gray-400">{phrase.franco}</span>
+                    <div className="flex items-center space-x-4 mb-4">
+                      <div className="relative w-24 h-24 flex-shrink-0">
+                        <Image
+                          src={phrase.imageUrl}
+                          alt={phrase.english}
+                          fill
+                          className="object-cover rounded-lg"
+                        />
+                      </div>
+                      <div className="flex-grow">
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="text-lg text-gray-900 dark:text-white">{phrase.english}</span>
+                          <span className="text-lg text-gray-900 dark:text-white">
+                            {phrase.gender && selectedGender === 'feminine' && phrase.feminineForm
+                              ? phrase.feminineForm.arabic
+                              : phrase.arabic}
+                          </span>
+                        </div>
+                        <span className="text-sm text-gray-500 dark:text-gray-400">
+                          {phrase.gender && selectedGender === 'feminine' && phrase.feminineForm
+                            ? phrase.feminineForm.franco
+                            : phrase.franco}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -120,7 +178,7 @@ export default function Home() {
                 Back to Phrases
               </button>
             </div>
-            <Quiz />
+            <Quiz selectedGender={selectedGender} />
           </div>
         )}
       </main>

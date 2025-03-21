@@ -8,6 +8,15 @@ interface Question {
   franco: string;
   options: string[];
   correctAnswer: string;
+  gender?: 'masculine' | 'feminine';
+  feminineForm?: {
+    arabic: string;
+    franco: string;
+  };
+}
+
+interface QuizProps {
+  selectedGender: 'masculine' | 'feminine';
 }
 
 const questions: Question[] = [
@@ -22,8 +31,13 @@ const questions: Question[] = [
     english: "How are you?",
     arabic: "كيفك؟",
     franco: "kifak?",
-    options: ["mar7aba", "kifak", "shukran", "sabah el kheir"],
-    correctAnswer: "kifak"
+    options: ["kifak", "kifik", "shukran", "sabah el kheir"],
+    correctAnswer: "kifak",
+    gender: 'masculine',
+    feminineForm: {
+      arabic: "كيفكِ؟",
+      franco: "kifik?"
+    }
   },
   {
     english: "Thank you",
@@ -50,8 +64,13 @@ const questions: Question[] = [
     english: "Please",
     arabic: "من فضلك",
     franco: "min fadlak",
-    options: ["tsabbe7 3ala kheir", "min fadlak", "3afwan", "ma3 el salame"],
-    correctAnswer: "min fadlak"
+    options: ["min fadlak", "min fadlik", "3afwan", "ma3 el salame"],
+    correctAnswer: "min fadlak",
+    gender: 'masculine',
+    feminineForm: {
+      arabic: "من فضلكِ",
+      franco: "min fadlik"
+    }
   },
   {
     english: "You're welcome",
@@ -69,7 +88,7 @@ const questions: Question[] = [
   }
 ];
 
-export default function Quiz() {
+export default function Quiz({ selectedGender }: QuizProps) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [score, setScore] = useState(0);
   const [showScore, setShowScore] = useState(false);
@@ -77,7 +96,12 @@ export default function Quiz() {
 
   const handleAnswerClick = (answer: string) => {
     setSelectedAnswer(answer);
-    if (answer === questions[currentQuestion].correctAnswer) {
+    const correctAnswer = questions[currentQuestion].gender === 'feminine' && 
+      questions[currentQuestion].feminineForm
+      ? questions[currentQuestion].feminineForm.franco
+      : questions[currentQuestion].correctAnswer;
+
+    if (answer === correctAnswer) {
       setScore(score + 1);
     }
 
@@ -114,23 +138,34 @@ export default function Quiz() {
     );
   }
 
+  const currentQuestionData = questions[currentQuestion];
+  const correctAnswer = currentQuestionData.gender === 'feminine' && 
+    currentQuestionData.feminineForm
+    ? currentQuestionData.feminineForm.franco
+    : currentQuestionData.correctAnswer;
+
   return (
     <div className="space-y-6">
       <div className="text-center mb-6">
         <h3 className="text-xl font-semibold mb-2">
           Question {currentQuestion + 1} of {questions.length}
         </h3>
-        <p className="text-2xl font-bold mb-4">What is "{questions[currentQuestion].english}" in Lebanese Arabic?</p>
+        <p className="text-2xl font-bold mb-4">What is "{currentQuestionData.english}" in Lebanese Arabic?</p>
+        {currentQuestionData.gender && (
+          <p className="text-sm text-gray-500 mb-2">
+            {selectedGender === 'feminine' ? 'Feminine form' : 'Masculine form'}
+          </p>
+        )}
       </div>
 
       <div className="grid grid-cols-1 gap-4">
-        {questions[currentQuestion].options.map((option, index) => (
+        {currentQuestionData.options.map((option, index) => (
           <button
             key={index}
             onClick={() => handleAnswerClick(option)}
             className={`p-4 rounded-lg text-lg font-semibold transition-colors ${
               selectedAnswer === option
-                ? option === questions[currentQuestion].correctAnswer
+                ? option === correctAnswer
                   ? 'bg-green-500 text-white'
                   : 'bg-red-500 text-white'
                 : 'bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600'
