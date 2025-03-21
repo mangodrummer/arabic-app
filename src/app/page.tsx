@@ -35,6 +35,30 @@ const phrases: Phrase[] = [
     arabic: "صباح الخير",
     franco: "sabah el kheir",
     audioUrl: "/audio/sabah-el-kheir.m4a"
+  },
+  {
+    english: "Good night",
+    arabic: "تصبح على خير",
+    franco: "tsabbe7 3ala kheir",
+    audioUrl: "/audio/tsabbe7-3ala-kheir.m4a"
+  },
+  {
+    english: "Please",
+    arabic: "من فضلك",
+    franco: "min fadlak",
+    audioUrl: "/audio/min-fadlak.m4a"
+  },
+  {
+    english: "You're welcome",
+    arabic: "عفواً",
+    franco: "3afwan",
+    audioUrl: "/audio/3afwan.m4a"
+  },
+  {
+    english: "Goodbye",
+    arabic: "مع السلامة",
+    franco: "ma3 el salame",
+    audioUrl: "/audio/ma3-el-salame.m4a"
   }
 ];
 

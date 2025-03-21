@@ -38,6 +38,34 @@ const questions: Question[] = [
     franco: "sabah el kheir",
     options: ["mar7aba", "kifak", "shukran", "sabah el kheir"],
     correctAnswer: "sabah el kheir"
+  },
+  {
+    english: "Good night",
+    arabic: "تصبح على خير",
+    franco: "tsabbe7 3ala kheir",
+    options: ["tsabbe7 3ala kheir", "min fadlak", "3afwan", "ma3 el salame"],
+    correctAnswer: "tsabbe7 3ala kheir"
+  },
+  {
+    english: "Please",
+    arabic: "من فضلك",
+    franco: "min fadlak",
+    options: ["tsabbe7 3ala kheir", "min fadlak", "3afwan", "ma3 el salame"],
+    correctAnswer: "min fadlak"
+  },
+  {
+    english: "You're welcome",
+    arabic: "عفواً",
+    franco: "3afwan",
+    options: ["tsabbe7 3ala kheir", "min fadlak", "3afwan", "ma3 el salame"],
+    correctAnswer: "3afwan"
+  },
+  {
+    english: "Goodbye",
+    arabic: "مع السلامة",
+    franco: "ma3 el salame",
+    options: ["tsabbe7 3ala kheir", "min fadlak", "3afwan", "ma3 el salame"],
+    correctAnswer: "ma3 el salame"
   }
 ];
 
@@ -92,9 +120,7 @@ export default function Quiz() {
         <h3 className="text-xl font-semibold mb-2">
           Question {currentQuestion + 1} of {questions.length}
         </h3>
-        <p className="text-2xl font-bold mb-4">{questions[currentQuestion].english}</p>
-        <p className="text-2xl font-bold mb-2">{questions[currentQuestion].arabic}</p>
-        <p className="text-gray-500">{questions[currentQuestion].franco}</p>
+        <p className="text-2xl font-bold mb-4">What is "{questions[currentQuestion].english}" in Lebanese Arabic?</p>
       </div>
 
       <div className="grid grid-cols-1 gap-4">
