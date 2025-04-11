@@ -2,18 +2,13 @@
 
 import { useState } from 'react';
 import Quiz from '@/components/Quiz';
-import Image from 'next/image';
+import AudioPlayer from '@/components/AudioPlayer';
 
 interface Phrase {
   english: string;
   arabic: string;
   franco: string;
-  imageUrl: string;
-  gender?: 'masculine' | 'feminine';
-  feminineForm?: {
-    arabic: string;
-    franco: string;
-  };
+  audioUrl: string;
 }
 
 const phrases: Phrase[] = [

@@ -6,6 +6,13 @@ export interface Phrase {
     masculine: string;
     feminine: string;
   };
+  exercise?: {
+    type: 'fill-in-blank' | 'multiple-choice';
+    prompt: string;
+    answer: string;
+    hint?: string;
+    options?: string[];
+  };
 }
 
 export interface Subject {

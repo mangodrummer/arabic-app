@@ -1,86 +1,67 @@
 'use client';
 
-import { useState } from 'react';
-import { Module, Phrase, Subject } from './types';
-import { foodModule } from './data/foodModule';
-
-const PhraseCard = ({ phrase }: { phrase: Phrase }) => {
-  const [gender, setGender] = useState<'masculine' | 'feminine'>('masculine');
-  
-  return (
-    <div className="bg-white rounded-lg shadow-md p-6 flex flex-col items-center">
-      <div className="text-center mb-4">
-        <h3 className="text-xl font-semibold text-gray-800">{phrase.english}</h3>
-        <p className="text-2xl font-bold text-gray-900 mt-2">{phrase.arabic}</p>
-        <p className="text-gray-500 mt-1">{phrase.franco}</p>
-      </div>
-      <div className="flex gap-2">
-        {phrase.genderForms && (
-          <button
-            onClick={() => setGender(gender === 'masculine' ? 'feminine' : 'masculine')}
-            className="px-3 py-1 bg-blue-100 text-blue-800 rounded-md text-sm"
-          >
-            {gender === 'masculine' ? '♂' : '♀'}
-          </button>
-        )}
-      </div>
-    </div>
-  );
-};
-
-const SubjectSection = ({ subject }: { subject: Subject }) => {
-  return (
-    <div className="mb-8">
-      <h3 className="text-2xl font-bold text-gray-900 mb-4">{subject.title}</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {subject.phrases.map((phrase: Phrase, index: number) => (
-          <PhraseCard key={index} phrase={phrase} />
-        ))}
-      </div>
-    </div>
-  );
-};
-
-const LessonSection = ({ lesson }: { lesson: Module['lessons'][0] }) => {
-  return (
-    <div className="mb-12">
-      <h2 className="text-3xl font-bold text-gray-900 mb-2">{lesson.title}</h2>
-      <p className="text-gray-600 mb-6">{lesson.description}</p>
-      {lesson.subjects.map((subject: Subject, index: number) => (
-        <SubjectSection key={index} subject={subject} />
-      ))}
-    </div>
-  );
-};
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
-  const [currentModule] = useState<Module>(foodModule);
-  const [currentLessonIndex, setCurrentLessonIndex] = useState<number>(0);
+  const router = useRouter();
 
   return (
-    <main className="min-h-screen p-8 bg-gray-50">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-4xl font-bold text-gray-900 mb-2">{currentModule.title}</h1>
-        <p className="text-xl text-gray-600 mb-8">{currentModule.description}</p>
-        
-        <div className="flex gap-4 mb-8">
-          {currentModule.lessons.map((_: Module['lessons'][0], index: number) => (
-            <button
-              key={index}
-              onClick={() => setCurrentLessonIndex(index)}
-              className={`px-4 py-2 rounded-md ${
-                currentLessonIndex === index
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-700'
-              }`}
-            >
-              Lesson {index + 1}
-            </button>
-          ))}
+    <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-white">
+      <div className="max-w-6xl mx-auto px-4 py-16">
+        <div className="text-center mb-16">
+          <h1 className="title text-5xl md:text-6xl font-bold text-indigo-900">
+            Learn Lebanese Arabic
+          </h1>
+          <p className="subtitle text-xl md:text-2xl text-indigo-700">
+            Discover the rich flavors of Lebanese culture through language
+          </p>
         </div>
 
-        <LessonSection lesson={currentModule.lessons[currentLessonIndex]} />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="card group hover:scale-105 transition-transform duration-200">
+            <div className="h-48 bg-indigo-100 rounded-lg mb-4 flex items-center justify-center">
+              <span className="text-6xl">🍽️</span>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Food & Dining</h2>
+            <p className="text-gray-600 mb-4">
+              Learn essential phrases for ordering food, cooking, and dining in Lebanese restaurants
+            </p>
+            <button
+              onClick={() => router.push('/food')}
+              className="btn-primary w-full"
+            >
+              Start Learning
+            </button>
+          </div>
+
+          <div className="card group hover:scale-105 transition-transform duration-200 opacity-50 cursor-not-allowed">
+            <div className="h-48 bg-indigo-100 rounded-lg mb-4 flex items-center justify-center">
+              <span className="text-6xl">🛍️</span>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Shopping</h2>
+            <p className="text-gray-600 mb-4">
+              Master phrases for shopping in Lebanese markets and stores (Coming Soon)
+            </p>
+            <button className="btn-primary w-full opacity-50 cursor-not-allowed">
+              Coming Soon
+            </button>
+          </div>
+
+          <div className="card group hover:scale-105 transition-transform duration-200 opacity-50 cursor-not-allowed">
+            <div className="h-48 bg-indigo-100 rounded-lg mb-4 flex items-center justify-center">
+              <span className="text-6xl">🗣️</span>
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Daily Life</h2>
+            <p className="text-gray-600 mb-4">
+              Learn common phrases for everyday conversations (Coming Soon)
+            </p>
+            <button className="btn-primary w-full opacity-50 cursor-not-allowed">
+              Coming Soon
+            </button>
+          </div>
+        </div>
       </div>
-    </main>
+    </div>
   );
 } 
